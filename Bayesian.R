@@ -14,30 +14,7 @@ library(stringr)
 ### Bayesian analysis of H1b
 
 
-# read in the data
-dfh <- read.csv("h1b_kaggle.csv", header=T, sep=",")
-# delete non-relavent variables
-dfh$EMPLOYER_NAME <- dfh$JOB_TITLE <- dfh$lon <- dfh$lat <- NULL
-dfh$X <- NULL
-# substract state
-WORKSITE<-data.frame(do.call('rbind', strsplit(as.character(dfh$WORKSITE), ", ")))
-dfh$State <- WORKSITE[,2]
-dfh$WORKSITE <- NULL
-# subset dataset by year
-df16 <- subset(dfh, dfh$YEAR=="2016")
-df15 <- subset(dfh, dfh$YEAR=="2015")
-df14 <- subset(dfh, dfh$YEAR=="2014")
-df13 <- subset(dfh, dfh$YEAR=="2013")
-df12 <- subset(dfh, dfh$YEAR=="2012")
-df11 <- subset(dfh, dfh$YEAR=="2011")
-# save preliminarily processed data, take waaaaaaaay to long to load the full dataset
-write_csv(df16, "df16.csv")
-write_csv(df15, "df16.csv")
-write_csv(df14, "df16.csv")
-write_csv(df13, "df16.csv")
-write_csv(df12, "df16.csv")
-write_csv(df11, "df16.csv")
-write_csv(dfh, "h1b.csv")
+
 
 # find unique SOC names -- job category
 job <- sort(table(df16$SOC_NAME))
@@ -451,31 +428,7 @@ job <- job[job$Freq!=0,]
 
 ## top SOC job category
 top <- as.character(tail(job$Var1, 24))
-top
-#[1] "INDUSTRIAL ENGINEERS"                              
-#[2] "BIOCHEMISTS AND BIOPHYSICISTS"                     
-#[3] "SOFTWARE QUALITY ASSURANCE ENGINEERS AND TESTERS"  
-#[4] "STATISTICIANS"                                     
-#[5] "WEB DEVELOPERS"                                    
-#[6] "MEDICAL SCIENTISTS, EXCEPT EPIDEMIOLOGISTS"        
-#[7] "PHYSICIANS AND SURGEONS, ALL OTHER"                
-#[8] "ELECTRICAL ENGINEERS"                              
-#[9] "COMPUTER AND INFORMATION SYSTEMS MANAGERS"         
-#[10] "ELECTRONICS ENGINEERS, EXCEPT COMPUTER"            
-#[11] "OPERATIONS RESEARCH ANALYSTS"                      
-#[12] "MARKET RESEARCH ANALYSTS AND MARKETING SPECIALISTS"
-#[13] "DATABASE ADMINISTRATORS"                           
-#[14] "MECHANICAL ENGINEERS"                              
-#[15] "FINANCIAL ANALYSTS"                                
-#[16] "ACCOUNTANTS AND AUDITORS"                          
-#[17] "NETWORK AND COMPUTER SYSTEMS ADMINISTRATORS"       
-#[18] "MANAGEMENT ANALYSTS"                               
-#[19] "COMPUTER SYSTEMS ANALYST"                          
-#[20] "SOFTWARE DEVELOPERS, SYSTEMS SOFTWARE"             
-#[21] "COMPUTER OCCUPATIONS, ALL OTHER"                   
-#[22] "COMPUTER PROGRAMMERS"                              
-#[23] "COMPUTER SYSTEMS ANALYSTS"                         
-#[24] "SOFTWARE DEVELOPERS, APPLICATIONS"  
+
 
 df16$SOC_NAME <- as.character(df16$SOC_NAME)
 df16$Job <- ifelse(df16$SOC_NAME %in% top, df16$SOC_NAME, "Other")
@@ -497,31 +450,7 @@ job <- as.data.frame(job)
 job <- job[job$Freq!=0,]
 top <- as.character(tail(job$Var1, 24))
 top
-#[1] "PHYSICAL THERAPISTS"                               
-#[2] "SOCIAL SCIENCE RESEARCH ASSISTANTS"                
-#[3] "STATISTICIANS"                                     
-#[4] "COMPUTER AND INFORMATION SYSTEMS MANAGERS"         
-#[5] "PHYSICIANS AND SURGEONS, ALL OTHER"                
-#[6] "LAWYERS"                                           
-#[7] "MEDICAL SCIENTISTS, EXCEPT EPIDEMIOLOGISTS"        
-#[8] "ELECTRICAL ENGINEERS"                              
-#[9] "CIVIL ENGINEERS"                                   
-#[10] "WEB DEVELOPERS"                                    
-#[11] "ECONOMISTS"                                        
-#[12] "MARKET RESEARCH ANALYSTS AND MARKETING SPECIALISTS"
-#[13] "FINANCIAL ANALYSTS"                                
-#[14] "COMPUTER SYSTEMS ANALYST"                          
-#[15] "OPERATIONS RESEARCH ANALYSTS"                      
-#[16] "SOFTWARE DEVELOPERS, SYSTEMS SOFTWARE"             
-#[17] "DATABASE ADMINISTRATORS"                           
-#[18] "ACCOUNTANTS AND AUDITORS"                          
-#[19] "NETWORK AND COMPUTER SYSTEMS ADMINISTRATORS"       
-#[20] "MANAGEMENT ANALYSTS"                               
-#[21] "COMPUTER OCCUPATIONS, ALL OTHER"                   
-#[22] "COMPUTER PROGRAMMERS"                              
-#[23] "COMPUTER SYSTEMS ANALYSTS"                         
-#[24] "SOFTWARE DEVELOPERS, APPLICATIONS"      
-#top <- cbind(top, "STATISTICIANS")
+
 
 VD$SOC_NAME <- as.character(VD$SOC_NAME)
 VD$Job <- ifelse(VD$SOC_NAME %in% top, VD$SOC_NAME, "Other")
